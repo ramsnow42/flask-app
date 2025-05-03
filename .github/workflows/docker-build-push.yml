@@ -2,7 +2,7 @@ name: Docker Build and Push
 
 on:
   push:
-    branches: [ "master" ]  # Trigger on pushes to 'master' branch
+    branches: ["master"]
 
 jobs:
   build-and-push:
@@ -11,17 +11,23 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_PASSWORD }}  # Using password (not recommended for production)
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
           context: .
-          platforms: linux/amd64  # Explicitly build for amd64 to avoid arch issues
+          platforms: linux/amd64  # Force AMD64 architecture
           push: true
           tags: |
             ${{ secrets.DOCKER_HUB_USERNAME }}/flask-app:latest
