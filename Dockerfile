@@ -1,7 +1,7 @@
-# Use explicit platform (correct syntax)
+# Base image (platform is handled by GitHub Actions)
 FROM python:3.9-slim
 
-# Set the working directory
+# Set working directory
 WORKDIR /app
 
 # Copy files
@@ -13,5 +13,5 @@ RUN pip install flask
 # Expose port
 EXPOSE 9001
 
-# Run the application
+# Run the app
 CMD ["python", "main.py"]
