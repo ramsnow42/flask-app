@@ -11,7 +11,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up QEMU
+      - name: Set up QEMU (for multi-arch builds)
         uses: docker/setup-qemu-action@v2
 
       - name: Set up Docker Buildx
@@ -23,11 +23,11 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
 
-      - name: Build and Push Docker Image
+      - name: Build and Push (AMD64 only)
         uses: docker/build-push-action@v5
         with:
           context: .
-          platforms: linux/amd64  # Force AMD64 architecture
+          platforms: linux/amd64  # Force AMD64 here instead of Dockerfile
           push: true
           tags: |
             ${{ secrets.DOCKER_HUB_USERNAME }}/flask-app:latest
